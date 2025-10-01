@@ -14,7 +14,7 @@
     "package": "npm run build && ncc build --source-map --license licenses.txt",
     "test": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=./.env.test jest",
     "test:watch": "cross-env NODE_ENV=test DOTENV_CONFIG_PATH=./.env.test jest --watch",
-    "test:ci": "cross-env NODE_ENV=test jest --collect-coverage -ci"
+    "test:ci": "cross-env NODE_ENV=test jest --ci"
   },
   "keywords": [],
   "author": "",

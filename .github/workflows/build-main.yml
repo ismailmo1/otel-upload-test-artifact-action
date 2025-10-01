@@ -40,9 +40,9 @@ jobs:
     needs: [lint-and-test]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v5
         with:
-          node-version: "16"
+          node-version: "latest"
           cache: "npm"
       - name: npm ci
         run: npm ci --ignore-scripts
