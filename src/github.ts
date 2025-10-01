@@ -70,7 +70,7 @@ export async function uploadTraceLogArtifact({
     [path],
     "."
   );
-  if (uploadResponse.failedItems.length > 0) {
+  if (uploadResponse.id == undefined) {
     throw new Error(`Failed to upload ${path} to Artifact<${artifactKey}>`);
   }
 }

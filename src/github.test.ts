@@ -82,9 +82,7 @@ describe("github.ts", () => {
           typeof mockArtifactClient.uploadArtifact
         >;
       mockUploadArtifact.mockResolvedValue(
-        mock<artifact.UploadResponse>({
-          failedItems: [],
-        })
+        mock<artifact.UploadArtifactResponse>({})
       );
       await uploadTraceLogArtifact({
         jobName,
@@ -107,8 +105,8 @@ describe("github.ts", () => {
           typeof mockArtifactClient.uploadArtifact
         >
       ).mockResolvedValue(
-        mock<artifact.UploadResponse>({
-          failedItems: [`{${jobName}}{${stepName}}`],
+        mock<artifact.UploadArtifactResponse>({
+          id: undefined,
         })
       );
 
