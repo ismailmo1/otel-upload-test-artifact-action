@@ -1,6 +1,7 @@
 import {
   BasicTracerProvider,
   SimpleSpanProcessor,
+  SpanExporter,
 } from "@opentelemetry/sdk-trace-base";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { FileTraceExporter } from "opentelemetry-exporter-trace-otlp-file";
@@ -30,7 +31,9 @@ export function createTracerProvider({
       [SemanticResourceAttributes.SERVICE_VERSION]: serviceVersion,
     }),
   });
-  tracerProvider.addSpanProcessor(new SimpleSpanProcessor(exporter));
+  tracerProvider.addSpanProcessor(
+    new SimpleSpanProcessor(exporter as SpanExporter)
+  );
 
   tracerProvider.register();
 

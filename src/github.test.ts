@@ -7,7 +7,6 @@ import {
 } from "./github";
 import { Octokit } from "@octokit/rest";
 import { Context } from "@actions/github/lib/context";
-import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 import { mock, mockDeep } from "jest-mock-extended";
 import * as artifact from "@actions/artifact";
 
@@ -52,7 +51,8 @@ describe("github.ts", () => {
 
       subject = await getWorkflowRunStep({
         context: mockContext,
-        octokit: mockOctokit,
+        // TODO: fix type
+        octokit: mockOctokit as any, // eslint-disable-line
         runId,
         jobName,
         stepName,
@@ -95,7 +95,7 @@ describe("github.ts", () => {
 
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(mockUploadArtifact).toBeCalledWith(
-        `{${jobName}}{${stepName}}`,
+        `${jobName}${stepName}`,
         [filePath],
         "."
       );

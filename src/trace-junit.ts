@@ -48,8 +48,9 @@ export async function traceJunitArtifact({
       numFiles++;
       const xmlString = fs.readFileSync(file, { encoding: "utf-8" });
       const document = await parse(xmlString);
-
-      if ("testcase" in document) {
+      if (document == null) {
+        // do nothing if document is null or undefined
+      } else if ("testcase" in document) {
         const testSuite: TestSuite = document;
         const testSuiteResponse = traceTestSuite({
           testSuite,
@@ -147,6 +148,9 @@ export function traceTestSuites({
 
   let endTimeSec = 0;
   try {
+    if (testSuites.testsuite == null) {
+      throw new Error("testSuite.testsuite is null or undefined");
+    }
     const testSuiteTimes: number[] = testSuites.testsuite.map(
       (testSuite) =>
         traceTestSuite({
@@ -190,10 +194,10 @@ export function traceTestSuite({
   parentContext,
   baseHtmlUrl,
 }: TraceTestSuiteParams): TraceTestSuiteResponse {
-  core.debug(`Tracing TestSuite<${testSuite.name}>`);
+  core.debug(`Tracing TestSuite<${testSuite.name}>`); // eslint-disable-line @typescript-eslint/restrict-template-expressions
   const ctx = trace.setSpan(parentContext, parentSpan);
   const span = tracer.startSpan(
-    testSuite.name,
+    testSuite.name || "unnamed testsuite",
     {
       startTime,
       attributes: {
@@ -211,7 +215,7 @@ export function traceTestSuite({
         "test.package": testSuite.package,
         "test.system.out": testSuite["system-out"],
         "test.system.err": testSuite["system-err"],
-        "test.html_url": `${baseHtmlUrl}/${testSuite.name}`,
+        "test.html_url": `${baseHtmlUrl}/${testSuite.name}`, // eslint-disable-line @typescript-eslint/restrict-template-expressions
       },
     },
     ctx
@@ -280,10 +284,10 @@ export function traceTestCase({
   tracer,
   trace,
 }: TraceTestCaseParams): number {
-  core.debug(`Tracing TestCase<${testCase.name}>`);
+  core.debug(`Tracing TestCase<${testCase.name}>`); // eslint-disable-line @typescript-eslint/restrict-template-expressions
   const ctx = trace.setSpan(parentContext, parentSpan);
   const span = tracer.startSpan(
-    testCase.name,
+    testCase.name || "unnamed testsuite",
     {
       startTime,
       attributes: {

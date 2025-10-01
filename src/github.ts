@@ -64,7 +64,7 @@ export async function uploadTraceLogArtifact({
   path,
   artifactClient,
 }: UploadTraceLogArtifactParams): Promise<void> {
-  const artifactKey = `{${jobName}}{${stepName}}`;
+  const artifactKey = `${jobName}${stepName}`;
   const uploadResponse = await artifactClient.uploadArtifact(
     artifactKey,
     [path],
